@@ -32,10 +32,10 @@ static catalog* _instance = nil;
 -(id)init{
     self = [super init];
     if (self) {
-        data = @[[Product productWithName:@"BaseBall" price:@"100" image:@"Baseball.png"],
-                 [Product productWithName:@"BasketBall" price:@"200" image:@"Basketball.png"],
-                 [Product productWithName:@"FootBall" price:@"250" image:@"Football.png"],
-                 [Product productWithName:@"VolleyBall" price:@"300" image:@"Volleyball.png"]];
+        data = @[[Product productWithName:@"BaseBall" code:@"1" price:@"100" image:@"Baseball.png"],
+                 [Product productWithName:@"BasketBall" code:@"2" price:@"200" image:@"Basketball.png"],
+                 [Product productWithName:@"FootBall" code:@"3" price:@"250" image:@"Football.png"],
+                 [Product productWithName:@"VolleyBall" code:@"4" price:@"300" image:@"Volleyball.png"]];
     }
     return self;
 }

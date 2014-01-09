@@ -10,22 +10,42 @@
 #import "Product.h"
 #import "ProductCell.h"
 #import "catalog.h"
+#import "Cart.h"
+#import "CartCell.h"
 
-@interface ViewController ()<UITableViewDelegate, UITableViewDataSource, CartDelegate>{
-    NSMutableArray* cartItems;
-}
+@interface ViewController ()<UITableViewDelegate, UITableViewDataSource, CartDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *table;
+@property (strong, nonatomic) Cart* cart;
 
 @end
 
 @implementation ViewController
+
+
+-(void)incQuantity:(NSString *)productCode{
+    [self.cart incQuantity:productCode];
+    
+    NSIndexSet* indexSet = [NSIndexSet indexSetWithIndex:1];
+    [self.table reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+-(void)decQuantitiy:(NSString *)productCode{
+    [self.cart decQuantitiy:productCode];
+    
+    NSIndexSet* indexSet = [NSIndexSet indexSetWithIndex:1];
+    [self.table reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
 // catalog Delegate : addItem
 -(void)addItem:(id)sender{
     // product identifier for index
     NSIndexPath* indexPath = [self.table indexPathForCell:sender];
     Product* product = [[catalog defaultCatalog] productAt:indexPath.row];
     
-    [cartItems addObject:product];
+    
+    // 핵심
+    [self.cart addProduct:product];
+    
     NSIndexSet* indexSet = [NSIndexSet indexSetWithIndex:1];
     [self.table reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
 }
@@ -39,7 +59,7 @@
     if(0 == section){
         return [[catalog defaultCatalog] numberOfProduct];
     }else{
-        return  cartItems.count;
+        return  self.cart.items.count;
     }
 }
 
@@ -55,10 +75,10 @@
     }
     else{
         // second section for cart
-        ProductCell* cell = [tableView dequeueReusableCellWithIdentifier:@"CART_CELL" forIndexPath:indexPath];
+        CartCell* cell = (CartCell *)[tableView dequeueReusableCellWithIdentifier:@"CART_CELL" forIndexPath:indexPath];
         cell.delegate = self;
-        Product* product = cartItems[indexPath.row];
-        cell.textLabel.text = product.productName;
+        CartItem* cartItem = self.cart.items[indexPath.row];
+        [cell setCarItem:cartItem];
         return cell;
     }
 }
@@ -75,8 +95,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    cartItems = [[NSMutableArray alloc] init];
+    self.cart = [[Cart alloc]init];
+    self.cart.items = [[NSMutableArray alloc] init];
 	// Do any additional setup after loading the view, typically from a nib.
 }
 

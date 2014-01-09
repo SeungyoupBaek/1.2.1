@@ -1,5 +1,5 @@
 //
-//  CartDelegate.h
+//  Cart.h
 //  1.2.1
 //
 //  Created by SDT-1 on 2014. 1. 9..
@@ -8,15 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import "Product.h"
+#import "CartItem.h"
 
-@protocol CartDelegate <NSObject>
+@interface Cart : NSObject
+@property (strong, nonatomic) NSMutableArray* items;
 
-// Add Product to Cart
--(void)addItem:(id)sender;
-
-// Increase/Decrease Product in Cart
+-(void)addProduct:(Product*)item;
 -(void)incQuantity:(NSString*)productCode;
 -(void)decQuantitiy:(NSString*)productCode;
+
+-(CartItem *)cartItemsWith:(NSString*)productCode;
 
 
 @end
