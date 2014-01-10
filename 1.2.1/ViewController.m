@@ -12,6 +12,7 @@
 #import "catalog.h"
 #import "Cart.h"
 #import "CartCell.h"
+#import "ProductDetailViewController.h"
 
 @interface ViewController ()<UITableViewDelegate, UITableViewDataSource, CartDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -104,6 +105,16 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    // 제품 상세보기 뷰 컨트롤러
+    ProductDetailViewController* detailVC = segue.destinationViewController;
+    
+    NSIndexPath* indexPath = [self.table indexPathForCell:sender];
+    Product* selectedProduct = [[catalog defaultCatalog] productAt:indexPath.row];
+    
+    // 제품 코드를 넘겨줌
+    detailVC.productCode = selectedProduct.code;
 }
 
 @end

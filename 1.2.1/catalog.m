@@ -7,10 +7,20 @@
 //
 
 #import "catalog.h"
-#import "Product.h"
+
 
 @implementation catalog{
     NSArray* data;
+}
+
+
+-(Product *)productWithCode:(NSString *)productCode{
+    for (Product *one in data) {
+        if ([ one isEqualProduct:productCode]) {
+            return one;
+        }
+    }
+    return nil;
 }
 
 -(id)productAt:(NSInteger)index{
